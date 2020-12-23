@@ -17,36 +17,66 @@ import java.util.regex.Pattern;
 
 class Main {
 
+
   public static String QuestionsMarks(String str) {
     // code goes here 
-    var numberSubStrings = getComponentsFromString(inputString, "\\d+");
-    var stringSubStrings = getComponentsFromString(inputString, "\\D+");
-    System.out.println(numberSubStrings);
-    System.out.println(stringSubStrings);
-    return str;
+    int countOfPairsAddingToTen = 0;
+    ArrayList<ArrayList<Integer>> indicesOfSubStrings = getComponentsFromString(str, "\\d+");
+    ArrayList<Integer> substringStartIndices = indicesOfSubStrings.get(0);
+    ArrayList<Integer> substringEndIndices = indicesOfSubStrings.get(1);
+	// var stringSubStrings = getComponentsFromString(str, "\\D+");
+    System.out.println(indicesOfSubStrings);
+
+    if (substringStartIndices.size() == 0) {
+    	return "false";
+    }
+
+    for (int i = 0; i < substringStartIndices.size() -1; i++) {
+    	int firstNumberIndex = substringStartIndices.get(i);
+    	int secondNumberIndex = substringStartIndices.get(i+1);
+    	char firstNumber = str.charAt(firstNumberIndex);
+    	char secondNumber = str.charAt(secondNumberIndex);
+    	int firstInteger = Character.getNumericValue(firstNumber);
+    	int secondInteger = Character.getNumericValue(secondNumber);
+    	
+
+    	if (firstInteger + secondInteger == 10) {
+    		countOfPairsAddingToTen ++;
+    		String substringBetweenNumbers = str.substring(firstNumberIndex+1, secondNumberIndex);
+    		int questionMarkCount = (substringBetweenNumbers.split("\\?", -1).length ) - 1;
+    		if (questionMarkCount == 3) {
+    			continue;
+    		} else {
+    			return "false";
+    		}
+    	}
+    }
+
+	if (countOfPairsAddingToTen == 0) {
+		return "false";
+	} else {
+		return "true";
+	}
   }
 
-  public static ArrayList<Object> getComponentsFromString(String inputString, String pattern) {
+
+  public static ArrayList<ArrayList<Integer>> getComponentsFromString(String inputString, String pattern) {
   	Pattern p = Pattern.compile(pattern);
   	Matcher matcher = p.matcher(inputString);
-  	ArrayList<Object> pMatches = new ArrayList<Object>();
+  	ArrayList<Integer> numberStartIndex = new ArrayList<Integer>();
+  	ArrayList<Integer> numberEndIndex = new ArrayList<Integer>();
   	while (matcher.find()) {
-  		pMatches.add(matcher.group());
-  		pMatches.add(new Integer(matcher.start()));
+  		numberStartIndex.add(new Integer(matcher.start()));
+  		numberEndIndex.add(new Integer(matcher.end()));
   	}
-  	for (Object s : pMatches) {
-  		System.out.println(s);
-  	}
-  	return pMatches;
+  	
+  	return new ArrayList<ArrayList<Integer>>(Arrays.asList(numberStartIndex, numberEndIndex));
   }
 
 
   public static void main (String[] args) {  
-    // keep this function call here
-    var inputString = "acc?7??sss?3rr1??????5";
+    var inputString = "acc?77??sss?3rr1??????5";
     QuestionsMarks(inputString);
-    // Scanner s = new Scanner(System.in);
-    // System.out.print(getNumbersFromString(s.nextLine())); 
   }
 
 }
