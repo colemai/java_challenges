@@ -19,13 +19,10 @@ class Main {
 
 
   public static String QuestionsMarks(String str) {
-    // code goes here 
     int countOfPairsAddingToTen = 0;
     ArrayList<ArrayList<Integer>> indicesOfSubStrings = getComponentsFromString(str, "\\d+");
     ArrayList<Integer> substringStartIndices = indicesOfSubStrings.get(0);
     ArrayList<Integer> substringEndIndices = indicesOfSubStrings.get(1);
-	// var stringSubStrings = getComponentsFromString(str, "\\D+");
-    System.out.println(indicesOfSubStrings);
 
     if (substringStartIndices.size() == 0) {
     	return "false";
@@ -38,12 +35,11 @@ class Main {
     	char secondNumber = str.charAt(secondNumberIndex);
     	int firstInteger = Character.getNumericValue(firstNumber);
     	int secondInteger = Character.getNumericValue(secondNumber);
-    	
 
     	if (firstInteger + secondInteger == 10) {
     		countOfPairsAddingToTen ++;
     		String substringBetweenNumbers = str.substring(firstNumberIndex+1, secondNumberIndex);
-    		int questionMarkCount = (substringBetweenNumbers.split("\\?", -1).length ) - 1;
+    		int questionMarkCount = (substringBetweenNumbers.split("\\?", -1).length) - 1;
     		if (questionMarkCount == 3) {
     			continue;
     		} else {
